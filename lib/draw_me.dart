@@ -19,17 +19,6 @@ class _DrawMeState extends State<DrawMe> {
   PainterController _controller;
   final count = 0;
 
-//  Future<void> _uploadFile() async {
-//    StorageReference storageReference;
-//    String filename = "image$count.png";
-//    storageReference = FirebaseStorage.instance.ref().child("images/$filename");
-//
-//    final StorageUploadTask uploadTask = storageReference.putFile(file);
-//    final StorageTaskSnapshot downloadUrl = (await uploadTask.onComplete);
-//    final String url = (await downloadUrl.ref.getDownloadURL());
-//    print("URL is $url");
-//  }
-
   @override
   void initState() {
     super.initState();
@@ -82,33 +71,17 @@ class _DrawMeState extends State<DrawMe> {
         IconButton(
             icon: Icon(Icons.check),
             onPressed: () async {
-              // GallerySaver.saveImage(myImagePath);
-//              final directory = await Path.getExternalStorageDirectory();
-//              final myImagePath = '${directory.path}/Pictures';
-//              print(myImagePath);
-//              final myDir = await Directory(myImagePath).create();
-//              final path = myImagePath + '${DateTime.now()}.png';
-              //final File newImage = await _image.copy('$path/image1.png');
-              //GallerySaver.saveImage('image1.png');
               setState(() {
                 _finished = true;
               });
-              //String _uploadedFileURL;
               Uint8List bytes = await _controller.exportAsPNGBytes();
-              //File('thumbnail.png').writeAsBytesSync(bytes);
-              File('image$count.png').writeAsBytesSync(bytes);
-//              StorageReference storageReference = FirebaseStorage.instance
-//                  .ref()
-//                  .child('images/${_image.path}}');
-//              StorageUploadTask uploadTask = storageReference.putFile(_image);
-//              await uploadTask.onComplete;
-              //_uploadFile(Uri.file('image$count.png0'));
-              print('File Uploaded');
-//              storageReference.getDownloadURL().then((fileURL) {
-//                setState(() {
-//                  _uploadedFileURL = fileURL;
-//                });
-//              });
+              StorageReference storageReference = FirebaseStorage.instance
+                  .ref()
+                  .child('/images/image$count.png');
+              StorageUploadTask uploadTask = storageReference.putData(bytes);
+              StorageTaskSnapshot resultOfUpload = await uploadTask.onComplete;
+              if(uploadTask.isSuccessful )
+                 print('File Uploaded');
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (BuildContext context) {
                 return Scaffold(
