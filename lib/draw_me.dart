@@ -39,7 +39,7 @@ class _DrawMeState extends State<DrawMe> {
 
   PainterController newController() {
     PainterController controller = PainterController();
-    controller.thickness = 5.0;
+    controller.thickness = 10.0;
     controller.backgroundColor = Colors.lightBlueAccent.withOpacity(0.1);
     return controller;
   }
